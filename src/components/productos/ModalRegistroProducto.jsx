@@ -12,7 +12,14 @@ const ModalRegistroProducto = ({
 }) => {
   const handleSubmitForm = (e) => {
     e.preventDefault(); // evitar recarga de página
-    handleAddProducto();
+    // Desenfocar input activo en iOS
+    if (document.activeElement) {
+      document.activeElement.blur();
+    }
+    // Pequeño delay para evitar bloqueo de eventos táctiles en iOS
+    setTimeout(() => {
+      handleAddProducto();
+    }, 100);
   };
 
   return (
