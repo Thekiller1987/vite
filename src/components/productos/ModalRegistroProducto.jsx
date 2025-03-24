@@ -10,13 +10,18 @@ const ModalRegistroProducto = ({
   handleAddProducto,
   categorias
 }) => {
+  const handleSubmitForm = (e) => {
+    e.preventDefault(); // evitar recarga de página
+    handleAddProducto();
+  };
+
   return (
     <Modal show={showModal} onHide={() => setShowModal(false)}>
       <Modal.Header closeButton>
         <Modal.Title>Agregar Producto</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
+        <Form onSubmit={handleSubmitForm}>
           <Form.Group className="mb-3">
             <Form.Label>Nombre</Form.Label>
             <Form.Control
@@ -58,20 +63,16 @@ const ModalRegistroProducto = ({
               onChange={handleImageChange}
             />
           </Form.Group>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowModal(false)}>
+              Cancelar
+            </Button>
+            <Button variant="primary" type="submit">
+              Guardar
+            </Button>
+          </Modal.Footer>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowModal(false)}>
-          Cancelar
-        </Button>
-        <Button
-          variant="primary"
-          onClick={handleAddProducto}
-          onTouchStart={handleAddProducto}
-        >
-          Guardar
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 };
