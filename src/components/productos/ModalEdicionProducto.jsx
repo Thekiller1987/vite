@@ -1,19 +1,39 @@
 import React from "react";
 import { Modal, Form, Button, Image } from "react-bootstrap";
+import imageCompression from "browser-image-compression";
 
 const ModalEdicionProducto = ({
   showEditModal,
   setShowEditModal,
   productoEditado,
+  setProductoEditado,
   handleEditInputChange,
-  handleEditImageChange,
   handleEditProducto,
   categorias
 }) => {
   if (!productoEditado) return null;
 
+  const handleEditImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      try {
+        const options = {
+          maxSizeMB: 0.2,
+          maxWidthOrHeight: 800,
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(file, options);
+        const base64 = await imageCompression.getDataUrlFromFile(compressedFile);
+        setProductoEditado((prev) => ({ ...prev, imagen: base64 }));
+      } catch (error) {
+        console.error("Error al comprimir imagen:", error);
+        alert("Error al procesar la imagen.");
+      }
+    }
+  };
+
   return (
-    <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+    <Modal show={showEditModal} onHide={() => setShowEditModal(false)} animation={false}>
       <Modal.Header closeButton>
         <Modal.Title>Editar Producto</Modal.Title>
       </Modal.Header>
@@ -26,6 +46,7 @@ const ModalEdicionProducto = ({
               name="nombre"
               value={productoEditado.nombre}
               onChange={handleEditInputChange}
+              style={{ fontSize: "16px" }}
             />
           </Form.Group>
           <Form.Group className="mb-3">
@@ -35,6 +56,7 @@ const ModalEdicionProducto = ({
               name="precio"
               value={productoEditado.precio}
               onChange={handleEditInputChange}
+              style={{ fontSize: "16px" }}
             />
           </Form.Group>
           <Form.Group className="mb-3">
@@ -43,6 +65,7 @@ const ModalEdicionProducto = ({
               name="categoria"
               value={productoEditado.categoria}
               onChange={handleEditInputChange}
+              style={{ fontSize: "16px" }}
             >
               <option value="">Seleccione una categoría</option>
               {categorias.map((cat) => (
@@ -61,6 +84,7 @@ const ModalEdicionProducto = ({
               type="file"
               accept="image/*"
               onChange={handleEditImageChange}
+              style={{ fontSize: "16px" }}
             />
           </Form.Group>
         </Form>
