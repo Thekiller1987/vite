@@ -11,6 +11,34 @@ const ModalRegistroProducto = ({
   handleAddProducto,
   categorias
 }) => {
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        img.onload = () => {
+          try {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            const dataURL = canvas.toDataURL("image/jpeg", 0.7); // Forzar JPEG
+            resolve(dataURL);
+          } catch (err) {
+            reject(err);
+          }
+        };
+        img.onerror = reject;
+        img.src = reader.result;
+      };
+
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -21,10 +49,10 @@ const ModalRegistroProducto = ({
           useWebWorker: true,
         };
         const compressedFile = await imageCompression(file, options);
-        const base64 = await imageCompression.getDataUrlFromFile(compressedFile);
+        const base64 = await convertToBase64(compressedFile);
         setNuevoProducto((prev) => ({ ...prev, imagen: base64 }));
       } catch (error) {
-        console.error("Error al comprimir imagen:", error);
+        console.error("Error al procesar imagen:", error);
         alert("Error al procesar la imagen.");
       }
     }
