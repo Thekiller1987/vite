@@ -161,7 +161,11 @@ const Productos = () => {
     <Container className="mt-5">
       <br />
       <h4>Gestión de Productos</h4>
-      <Button className="mb-3" onClick={() => setShowModal(true)}>
+      <Button
+        className="mb-3"
+        onClick={() => setShowModal(true)}
+        onTouchStart={() => setShowModal(true)}
+      >
         Agregar producto
       </Button>
       <TablaProductos
