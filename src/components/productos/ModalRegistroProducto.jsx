@@ -64,7 +64,11 @@ const ModalRegistroProducto = ({
         <Button variant="secondary" onClick={() => setShowModal(false)}>
           Cancelar
         </Button>
-        <Button variant="primary" onClick={handleAddProducto}>
+        <Button
+          variant="primary"
+          onClick={handleAddProducto}
+          onTouchStart={handleAddProducto}
+        >
           Guardar
         </Button>
       </Modal.Footer>
