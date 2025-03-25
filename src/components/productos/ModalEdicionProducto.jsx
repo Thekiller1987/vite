@@ -80,34 +80,34 @@ const ModalEdicionProducto = ({
         <Modal.Title>Editar Producto</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
-          <Form.Group className="mb-3">
-            <Form.Label>Nombre</Form.Label>
+        <Form className="formulario-producto">
+          <Form.Group className="grupo-formulario">
+            <Form.Label className="label-formulario">Nombre</Form.Label>
             <Form.Control
               type="text"
               name="nombre"
               value={productoEditado.nombre}
               onChange={handleEditInputChange}
-              style={{ fontSize: "16px" }}
+              className="input-formulario"
             />
           </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Precio</Form.Label>
+          <Form.Group className="grupo-formulario">
+            <Form.Label className="label-formulario">Precio</Form.Label>
             <Form.Control
               type="number"
               name="precio"
               value={productoEditado.precio}
               onChange={handleEditInputChange}
-              style={{ fontSize: "16px" }}
+              className="input-formulario"
             />
           </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Categoría</Form.Label>
+          <Form.Group className="grupo-formulario">
+            <Form.Label className="label-formulario">Categoría</Form.Label>
             <Form.Select
               name="categoria"
               value={productoEditado.categoria}
               onChange={handleEditInputChange}
-              style={{ fontSize: "16px" }}
+              className="input-formulario"
             >
               <option value="">Seleccione una categoría</option>
               {categorias.map((cat) => (
@@ -117,8 +117,8 @@ const ModalEdicionProducto = ({
               ))}
             </Form.Select>
           </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Imagen Actual</Form.Label>
+          <Form.Group className="grupo-formulario">
+            <Form.Label className="label-formulario">Imagen Actual</Form.Label>
             {productoEditado.imagen && (
               <BootstrapImage
                 src={productoEditado.imagen}
@@ -130,16 +130,24 @@ const ModalEdicionProducto = ({
               type="file"
               accept="image/*"
               onChange={handleEditImageChange}
-              style={{ fontSize: "16px" }}
+              className="input-formulario"
             />
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+        <Button
+          variant="secondary"
+          onClick={() => setShowEditModal(false)}
+          className="btn-formulario"
+        >
           Cancelar
         </Button>
-        <Button variant="primary" onClick={handleEditProducto}>
+        <Button
+          variant="primary"
+          onClick={handleEditProducto}
+          className="btn-formulario"
+        >
           Actualizar
         </Button>
       </Modal.Footer>

@@ -1,9 +1,354 @@
+/* === RESET GENERAL === */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0f0f1a;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', sans-serif;
+  transition: background-color 0.3s ease;
+}
 
+/* === NAVBAR === */
 .color-navbar {
-  background-color: #0093E9 !important;
-  background-image: linear-gradient(90deg, #0093E9 0%, #80D0C7 100%);
+  background: linear-gradient(90deg, #0f0f1a 0%, #252354 50%, #4c1a88 100%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .color-texto-marca {
-  color: #1e3d87 !important;
+  color: #72e0ff !important;
+  font-weight: 700;
+  text-shadow: 0 0 6px rgba(114, 224, 255, 0.6);
+}
+
+/* === ANIMACIONES === */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+.fade-in {
+  animation: fadeInUp 0.5s ease-in-out;
+}
+
+.table-row-enter {
+  animation: fadeInUp 0.4s ease-out;
+}
+.table-row-exit {
+  animation: fadeOut 0.3s ease-in forwards;
+}
+
+/* === TABLA CONTENEDORA === */
+.tabla-wrapper {
+  overflow-x: auto;
+  margin-top: 12px;
+  border-radius: 10px;
+}
+
+/* === TABLAS PERSONALIZADAS === */
+.tabla-productos,
+.tabla-categorias,
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+  font-size: 16px;
+  background-color: transparent;
+  color: #ccc;
+}
+
+/* Cabecera */
+.tabla-productos thead th,
+.tabla-categorias thead th,
+.table thead th {
+  background-color: #1d1b32 !important;
+  color: #ffffff !important;
+  padding: 12px;
+  text-align: center;
+  border-radius: 10px 10px 0 0;
+  border: none !important;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.1);
+}
+
+/* Filas */
+.tabla-productos tbody tr,
+.tabla-categorias tbody tr,
+.table tbody tr {
+  background-color: #1a1a2e !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: fadeInUp 0.4s ease-in-out;
+}
+
+.tabla-productos tbody tr:hover,
+.tabla-categorias tbody tr:hover,
+.table tbody tr:hover {
+  background-color: #2e2a4d !important;
+  transform: scale(1.01);
+}
+
+/* Celdas */
+.tabla-productos td,
+.tabla-categorias td,
+.table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #2f2f48 !important;
+  color: #ccc !important;
+  background-color: transparent !important;
+}
+
+/* === BOTONES DE ACCIÓN === */
+.btn-accion {
+  margin: 0 5px;
+  font-size: 14px;
+  border-radius: 6px;
+  color: #fff;
+  background-color: transparent;
+  border: 1px solid #555;
+  transition: all 0.2s ease;
+}
+.btn-accion:hover {
+  background-color: #2b2b3f;
+  transform: scale(1.1);
+}
+
+/* === FORMULARIOS === */
+.formulario-producto,
+.formulario-categoria {
+  padding: 10px 0;
+  animation: fadeInUp 0.5s ease-in-out;
+}
+
+.grupo-formulario {
+  margin-bottom: 18px;
+}
+
+.label-formulario {
+  font-weight: 600;
+  color: #72e0ff;
+  margin-bottom: 6px;
+}
+
+.input-formulario {
+  font-size: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #1d1d2d;
+  color: #ffffff;
+  border: 1px solid #444;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+.input-formulario:focus {
+  border-color: #00d4ff;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+  outline: none;
+}
+
+/* === BOTONES FORMULARIO === */
+.btn-formulario {
+  font-weight: 600;
+  padding: 10px 18px;
+  font-size: 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+.btn-formulario.btn-primary {
+  background-color: #1a73e8;
+  border: none;
+  color: white;
+}
+.btn-formulario.btn-primary:hover {
+  background-color: #1358c0;
+  transform: scale(1.05);
+}
+.btn-formulario.btn-secondary {
+  background-color: #444;
+  color: #fff;
+  border: none;
+}
+.btn-formulario.btn-secondary:hover {
+  background-color: #5c5c5c;
+  transform: scale(1.05);
+}
+
+/* === MODALES OSCUROS === */
+.modal-content {
+  background-color: #18182b;
+  border-radius: 14px;
+  border: none;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+.modal-header,
+.modal-footer {
+  background-color: #18182b;
+  border: none;
+}
+.modal-title {
+  color: #72e0ff;
+  text-shadow: 0 0 6px rgba(114, 224, 255, 0.4);
+}
+
+/* === TARJETAS DEL CATÁLOGO === */
+.tarjeta-producto {
+  background-color: #1a1a2e;
+  color: #e0e0e0;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.tarjeta-producto:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
+}
+
+.tarjeta-producto .card-img-top {
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #333;
+}
+
+.tarjeta-producto .card-body {
+  padding: 14px 16px;
+}
+
+.tarjeta-producto .card-title {
+  font-weight: 700;
+  font-size: 18px;
+  color: #72e0ff;
+  margin-bottom: 8px;
+  text-shadow: 0 0 6px rgba(114, 224, 255, 0.2);
+}
+
+.tarjeta-producto .card-text {
+  margin-bottom: 4px;
+  font-size: 15px;
+  color: #ccc;
+}
+
+/* === INICIO - PÁGINA PRINCIPAL === */
+.inicio-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh; /* ✅ más centrado en pantalla */
+  padding-top: 40px;
+  text-align: center;
+}
+
+.contenido-inicio {
+  animation: fadeInUp 0.6s ease-in-out;
+}
+
+.titulo-inicio {
+  font-size: 52px;
+  font-weight: bold;
+  color: #e0f7fa;
+  margin-bottom: 40px;
+  text-shadow: 0 0 12px rgba(114, 224, 255, 0.6);
+}
+
+.botones-inicio {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.btn-menu {
+  padding: 12px 24px;
+  background-color: #252354;
+  color: #72e0ff;
+  border: 1px solid #444;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 4px rgba(114, 224, 255, 0.3);
+}
+
+.btn-menu:hover {
+  background-color: #4c1a88;
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(114, 224, 255, 0.2);
+}
+
+.titulo-inicio {
+  text-shadow: 0 0 8px rgba(114, 224, 255, 0.6);
+  color: #e0f7fa;
+}
+
+.card-login {
+  background-color: #18182b;
+  color: white;
+  border-radius: 14px;
+  border: none;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+
+.card-login .form-control {
+  background-color: #1d1d2d;
+  color: #fff;
+  border: 1px solid #444;
+}
+
+.card-login .form-control:focus {
+  border-color: #00d4ff;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+}
+
+/* === BOTONES DE ACCIÓN PRINCIPAL (Agregar, Filtro, etc.) === */
+.btn-principal {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
+  background-color: #1a73e8;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.btn-principal:hover {
+  background-color: #1358c0;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 212, 255, 0.2);
+}
+
+
+/* === SELECT PERSONALIZADO === */
+.form-select {
+  background-color: #1d1d2d !important;
+  color: #ffffff !important;
+  border: 1px solid #444 !important;
+  border-radius: 10px !important;
+  padding: 10px 14px !important;
+  font-size: 16px;
+}
+
+.form-select:focus {
+  border-color: #00d4ff !important;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.6) !important;
+  outline: none;
 }

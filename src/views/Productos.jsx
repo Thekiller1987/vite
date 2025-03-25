@@ -10,6 +10,7 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
+
 import TablaProductos from "../components/productos/TablaProductos";
 import ModalRegistroProducto from "../components/productos/ModalRegistroProducto";
 import ModalEdicionProducto from "../components/productos/ModalEdicionProducto";
@@ -125,7 +126,7 @@ const Productos = () => {
       <br />
       <h4>Gestión de Productos</h4>
       <Button
-        className="mb-3"
+        className="btn-principal mb-3"
         onClick={() => setShowModal(true)}
         onTouchStart={() => setShowModal(true)}
       >

@@ -87,37 +87,37 @@ const ModalRegistroProducto = ({
         <Modal.Title>Agregar Producto</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmitForm}>
-          <Form.Group className="mb-3">
-            <Form.Label>Nombre</Form.Label>
+        <Form onSubmit={handleSubmitForm} className="formulario-producto">
+          <Form.Group className="grupo-formulario">
+            <Form.Label className="label-formulario">Nombre</Form.Label>
             <Form.Control
               type="text"
               name="nombre"
               value={nuevoProducto.nombre}
               onChange={handleInputChange}
               required
-              style={{ fontSize: "16px" }}
+              className="input-formulario"
             />
           </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Precio</Form.Label>
+          <Form.Group className="grupo-formulario">
+            <Form.Label className="label-formulario">Precio</Form.Label>
             <Form.Control
               type="number"
               name="precio"
               value={nuevoProducto.precio}
               onChange={handleInputChange}
               required
-              style={{ fontSize: "16px" }}
+              className="input-formulario"
             />
           </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Categoría</Form.Label>
+          <Form.Group className="grupo-formulario">
+            <Form.Label className="label-formulario">Categoría</Form.Label>
             <Form.Select
               name="categoria"
               value={nuevoProducto.categoria}
               onChange={handleInputChange}
               required
-              style={{ fontSize: "16px" }}
+              className="input-formulario"
             >
               <option value="">Seleccione una categoría</option>
               {categorias.map((cat) => (
@@ -127,20 +127,28 @@ const ModalRegistroProducto = ({
               ))}
             </Form.Select>
           </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Imagen</Form.Label>
+          <Form.Group className="grupo-formulario">
+            <Form.Label className="label-formulario">Imagen</Form.Label>
             <Form.Control
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              style={{ fontSize: "16px" }}
+              className="input-formulario"
             />
           </Form.Group>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowModal(false)}>
+            <Button
+              variant="secondary"
+              onClick={() => setShowModal(false)}
+              className="btn-formulario"
+            >
               Cancelar
             </Button>
-            <Button variant="primary" type="submit">
+            <Button
+              variant="primary"
+              type="submit"
+              className="btn-formulario"
+            >
               Guardar
             </Button>
           </Modal.Footer>

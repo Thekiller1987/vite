@@ -53,10 +53,12 @@ const Login = () => {
   }
 
   return (
-    <Container className="d-flex vh-100 justify-content-center align-items-center">
-      <Card style={{ width: "25rem" }} className="p-4">
+    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+      <Card className="p-4 card-login" style={{ width: "25rem" }}>
         <Card.Body>
-          <Card.Title className="text-center mb-4">Iniciar Sesión</Card.Title>
+          <Card.Title className="text-center mb-4 titulo-inicio">
+            Iniciar Sesión
+          </Card.Title>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -66,20 +68,22 @@ const Login = () => {
                 placeholder="Ingresa tu correo electrónico"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="input-formulario"
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-4" controlId="formBasicPassword">
               <Form.Label>Contraseña</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Contraseña"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="input-formulario"
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="w-100">
+            <Button variant="primary" type="submit" className="w-100 btn-formulario btn-primary">
               Iniciar Sesión
             </Button>
           </Form>
