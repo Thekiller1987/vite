@@ -352,3 +352,30 @@ body {
   box-shadow: 0 0 8px rgba(0, 212, 255, 0.6) !important;
   outline: none;
 }
+ 
+/* === OFFCANVAS OSCURO === */
+.offcanvas {
+  background-color: #0f0f1a !important;
+  color: #e0e0e0 !important;
+}
+
+.offcanvas .offcanvas-title {
+  color: #72e0ff !important;
+  font-weight: bold;
+  text-shadow: 0 0 6px rgba(114, 224, 255, 0.6);
+}
+
+.offcanvas .nav-link {
+  color: #72e0ff !important;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.offcanvas .nav-link:hover {
+  color: #ffffff !important;
+  transform: scale(1.05);
+}
+
+.offcanvas .btn-close {
+  filter: invert(1);
+}
