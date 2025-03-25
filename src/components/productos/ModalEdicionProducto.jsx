@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Form, Button } from "react-bootstrap";
-import BootstrapImage from "react-bootstrap/Image"; // ✅ Cambio aquí
+import BootstrapImage from "react-bootstrap/Image";
 import imageCompression from "browser-image-compression";
 
 const ModalEdicionProducto = ({
@@ -14,11 +14,10 @@ const ModalEdicionProducto = ({
 }) => {
   if (!productoEditado) return null;
 
-  // Convertir imagen comprimida a base64 PNG de forma segura
   const convertToCompressedBase64 = async (file) => {
     const options = {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 800,
+      maxSizeMB: 0.1,
+      maxWidthOrHeight: 600,
       useWebWorker: true,
     };
 
@@ -27,7 +26,7 @@ const ModalEdicionProducto = ({
       const objectUrl = URL.createObjectURL(compressedFile);
 
       return new Promise((resolve, reject) => {
-        const img = new window.Image(); // ✅ Usamos el constructor nativo
+        const img = new window.Image();
         img.onload = () => {
           try {
             const canvas = document.createElement("canvas");

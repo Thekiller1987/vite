@@ -11,11 +11,10 @@ const ModalRegistroProducto = ({
   handleAddProducto,
   categorias
 }) => {
-  // Convertir imagen comprimida a base64 PNG de forma segura
   const convertToCompressedBase64 = async (file) => {
     const options = {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 800,
+      maxSizeMB: 0.1,
+      maxWidthOrHeight: 600,
       useWebWorker: true
     };
 
@@ -24,8 +23,7 @@ const ModalRegistroProducto = ({
       const objectUrl = URL.createObjectURL(compressedFile);
 
       return new Promise((resolve, reject) => {
-        const img = new Image();
-
+        const img = new window.Image();
         img.onload = () => {
           try {
             const canvas = document.createElement("canvas");
@@ -55,7 +53,6 @@ const ModalRegistroProducto = ({
     }
   };
 
-  // Manejar imagen seleccionada
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
