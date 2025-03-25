@@ -1,5 +1,6 @@
 import React from "react";
-import { Modal, Form, Button, Image } from "react-bootstrap";
+import { Modal, Form, Button } from "react-bootstrap";
+import BootstrapImage from "react-bootstrap/Image"; // ✅ Cambio aquí
 import imageCompression from "browser-image-compression";
 
 const ModalEdicionProducto = ({
@@ -13,13 +14,20 @@ const ModalEdicionProducto = ({
 }) => {
   if (!productoEditado) return null;
 
-  // Convertir cualquier imagen a base64 PNG
-  const convertToBase64PNG = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      const img = new Image();
+  // Convertir imagen comprimida a base64 PNG de forma segura
+  const convertToCompressedBase64 = async (file) => {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 800,
+      useWebWorker: true,
+    };
 
-      reader.onload = () => {
+    try {
+      const compressedFile = await imageCompression(file, options);
+      const objectUrl = URL.createObjectURL(compressedFile);
+
+      return new Promise((resolve, reject) => {
+        const img = new window.Image(); // ✅ Usamos el constructor nativo
         img.onload = () => {
           try {
             const canvas = document.createElement("canvas");
@@ -27,23 +35,26 @@ const ModalEdicionProducto = ({
             canvas.height = img.height;
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0);
-            const dataURL = canvas.toDataURL("image/png"); // 🔥 PNG forzado
-            resolve(dataURL);
+            const base64 = canvas.toDataURL("image/png");
+            URL.revokeObjectURL(objectUrl);
+            resolve(base64);
           } catch (err) {
+            URL.revokeObjectURL(objectUrl);
             reject(err);
           }
         };
-        img.onerror = reject;
 
-        // Delay extra por compatibilidad con Safari/iOS
-        setTimeout(() => {
-          img.src = reader.result;
-        }, 50);
-      };
+        img.onerror = (err) => {
+          URL.revokeObjectURL(objectUrl);
+          reject(err);
+        };
 
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+        img.src = objectUrl;
+      });
+    } catch (error) {
+      console.error("Error al comprimir imagen:", error);
+      throw error;
+    }
   };
 
   const handleEditImageChange = async (e) => {
@@ -55,15 +66,7 @@ const ModalEdicionProducto = ({
           return;
         }
 
-        const options = {
-          maxSizeMB: 1,
-          maxWidthOrHeight: 800,
-          useWebWorker: true,
-        };
-
-        const compressedFile = await imageCompression(file, options);
-        const base64 = await convertToBase64PNG(compressedFile);
-
+        const base64 = await convertToCompressedBase64(file);
         setProductoEditado((prev) => ({ ...prev, imagen: base64 }));
       } catch (error) {
         console.error("Error al procesar imagen:", error);
@@ -118,7 +121,11 @@ const ModalEdicionProducto = ({
           <Form.Group className="mb-3">
             <Form.Label>Imagen Actual</Form.Label>
             {productoEditado.imagen && (
-              <Image src={productoEditado.imagen} width="100" className="mb-2" />
+              <BootstrapImage
+                src={productoEditado.imagen}
+                width="100"
+                className="mb-2"
+              />
             )}
             <Form.Control
               type="file"

@@ -11,13 +11,21 @@ const ModalRegistroProducto = ({
   handleAddProducto,
   categorias
 }) => {
-  // Convertir archivo a base64 PNG desde <canvas>
-  const convertToBase64PNG = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      const img = new Image();
+  // Convertir imagen comprimida a base64 PNG de forma segura
+  const convertToCompressedBase64 = async (file) => {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 800,
+      useWebWorker: true
+    };
 
-      reader.onload = () => {
+    try {
+      const compressedFile = await imageCompression(file, options);
+      const objectUrl = URL.createObjectURL(compressedFile);
+
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+
         img.onload = () => {
           try {
             const canvas = document.createElement("canvas");
@@ -25,25 +33,29 @@ const ModalRegistroProducto = ({
             canvas.height = img.height;
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0);
-            const dataURL = canvas.toDataURL("image/png"); // 🔥 Forzar PNG
-            resolve(dataURL);
+            const base64 = canvas.toDataURL("image/png");
+            URL.revokeObjectURL(objectUrl);
+            resolve(base64);
           } catch (err) {
+            URL.revokeObjectURL(objectUrl);
             reject(err);
           }
         };
-        img.onerror = reject;
-        // delay extra por compatibilidad Safari/iOS
-        setTimeout(() => {
-          img.src = reader.result;
-        }, 50);
-      };
 
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+        img.onerror = (err) => {
+          URL.revokeObjectURL(objectUrl);
+          reject(err);
+        };
+
+        img.src = objectUrl;
+      });
+    } catch (error) {
+      console.error("Error al comprimir imagen:", error);
+      throw error;
+    }
   };
 
-  // Manejar carga de imagen, comprimir y convertir a PNG
+  // Manejar imagen seleccionada
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -53,15 +65,7 @@ const ModalRegistroProducto = ({
           return;
         }
 
-        const options = {
-          maxSizeMB: 1,
-          maxWidthOrHeight: 800,
-          useWebWorker: true,
-        };
-
-        const compressedFile = await imageCompression(file, options);
-        const base64 = await convertToBase64PNG(compressedFile);
-
+        const base64 = await convertToCompressedBase64(file);
         setNuevoProducto((prev) => ({ ...prev, imagen: base64 }));
       } catch (error) {
         console.error("Error al procesar imagen:", error);
