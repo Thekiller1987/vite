@@ -13,10 +13,11 @@ const ModalEdicionProducto = ({
 }) => {
   if (!productoEditado) return null;
 
-  const convertToBase64 = (file) => {
+  // Convertir cualquier imagen a base64 PNG
+  const convertToBase64PNG = (file) => {
     return new Promise((resolve, reject) => {
-      const img = new Image();
       const reader = new FileReader();
+      const img = new Image();
 
       reader.onload = () => {
         img.onload = () => {
@@ -26,14 +27,18 @@ const ModalEdicionProducto = ({
             canvas.height = img.height;
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0);
-            const dataURL = canvas.toDataURL("image/jpeg", 0.7); // JPEG forzado
+            const dataURL = canvas.toDataURL("image/png"); // 🔥 PNG forzado
             resolve(dataURL);
           } catch (err) {
             reject(err);
           }
         };
         img.onerror = reject;
-        img.src = reader.result;
+
+        // Delay extra por compatibilidad con Safari/iOS
+        setTimeout(() => {
+          img.src = reader.result;
+        }, 50);
       };
 
       reader.onerror = reject;
@@ -45,17 +50,24 @@ const ModalEdicionProducto = ({
     const file = e.target.files[0];
     if (file) {
       try {
+        if (file.size > 5 * 1024 * 1024) {
+          alert("La imagen supera los 5MB. Por favor, selecciona una más liviana.");
+          return;
+        }
+
         const options = {
-          maxSizeMB: 0.2,
+          maxSizeMB: 1,
           maxWidthOrHeight: 800,
           useWebWorker: true,
         };
+
         const compressedFile = await imageCompression(file, options);
-        const base64 = await convertToBase64(compressedFile);
+        const base64 = await convertToBase64PNG(compressedFile);
+
         setProductoEditado((prev) => ({ ...prev, imagen: base64 }));
       } catch (error) {
         console.error("Error al procesar imagen:", error);
-        alert("Error al procesar la imagen.");
+        alert("Error al procesar la imagen. Asegúrate de que sea una imagen válida.");
       }
     }
   };
