@@ -1,15 +1,20 @@
+// Catalogo.jsx
 import React, { useState, useEffect } from "react";
 import { Container, Row, Form, Col } from "react-bootstrap";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { db } from "../database/firebaseconfig";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import TarjetaProducto from "../components/catalogo/TarjetaProducto";
 import VistaProducto from "../components/catalogo/VistaProducto";
+import ModalEdicionProducto from "../components/productos/ModalEdicionProducto";
 
 const Catalogo = () => {
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todas");
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [productoEditado, setProductoEditado] = useState(null);
 
   const productosCollection = collection(db, "productos");
   const categoriasCollection = collection(db, "categorias");
@@ -38,9 +43,32 @@ const Catalogo = () => {
     fetchData();
   }, []);
 
-  const productosFiltrados = categoriaSeleccionada === "Todas"
-    ? productos
-    : productos.filter((producto) => producto.categoria === categoriaSeleccionada);
+  const productosFiltrados =
+    categoriaSeleccionada === "Todas"
+      ? productos
+      : productos.filter((producto) => producto.categoria === categoriaSeleccionada);
+
+  // 🛠 Funciones para edición
+  const handleEditarClick = (producto) => {
+    setProductoEditado(producto);
+    setShowEditModal(true);
+  };
+
+  const handleEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setProductoEditado((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleEditProducto = async () => {
+    try {
+      const productoRef = doc(db, "productos", productoEditado.id);
+      await updateDoc(productoRef, productoEditado);
+      setShowEditModal(false);
+      fetchData(); // Recargar los productos actualizados
+    } catch (error) {
+      console.error("Error al actualizar producto:", error);
+    }
+  };
 
   return (
     <Container className="mt-5">
@@ -72,12 +100,27 @@ const Catalogo = () => {
               <Row>
                 {productosFiltrados.length > 0 ? (
                   productosFiltrados.map((producto) => (
-                    <TarjetaProducto key={producto.id} producto={producto} />
+                    <TarjetaProducto
+                      key={producto.id}
+                      producto={producto}
+                      onEditar={handleEditarClick}
+                    />
                   ))
                 ) : (
                   <p>No hay productos en esta categoría.</p>
                 )}
               </Row>
+
+              {/* Modal de edición */}
+              <ModalEdicionProducto
+                showEditModal={showEditModal}
+                setShowEditModal={setShowEditModal}
+                productoEditado={productoEditado}
+                setProductoEditado={setProductoEditado}
+                handleEditInputChange={handleEditInputChange}
+                handleEditProducto={handleEditProducto}
+                categorias={categorias}
+              />
             </>
           }
         />
